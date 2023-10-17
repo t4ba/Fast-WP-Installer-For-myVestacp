@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Install WordPress</title>
-	<link rel="apple-touch-icon" sizes="60x60" href="https://myvestacp.com/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://myvestacp.com/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://myvestacp.com/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://myvestacp.com/favicon-16x16.png">
     <style>
@@ -48,12 +48,12 @@
 
     <div id="console"></div>
 
-    <p>This is created for MyVestaCP control panel, allowing you to install WordPress quickly without using the command line. (Remove wp-installer.php after installing WordPress)</p>
+    <p>This is created for MyVestaCP control panel, allowing you to install WordPress quickly without using the command line. (If the automatic removal of wp-installer.php fails, please remove it manually from your web directory.)</p>
 
     <a href="https://myvestacp.com/" target="_blank"><button class="blue-button">Find More About MyVestaCP</button></a>
 
     <p>Created By T4B - <a href="https://github.com/t4ba/Fast-WP-Installer-For-myVestacp" target="_blank">GitHub Repository</a></p>
-	
+    
     <?php
     if (isset($_POST['install_wordpress'])) {
         // download the latest wordPress file
@@ -73,7 +73,7 @@
                 $zip->close();
                 echo '<script>document.getElementById("console").innerHTML += "WordPress unzipped successfully.<br>";</script>';
 
-                // move  files from the 'wordpress' folder to the root
+                // move files from the 'wordpress' folder to the root
                 $wordpress_folder = 'wordpress';
                 $files = scandir($wordpress_folder);
                 foreach ($files as $file) {
@@ -90,6 +90,16 @@
 
                 // success message
                 echo '<script>document.getElementById("console").innerHTML += "WordPress has been successfully installed.<br>";</script>';
+
+                // Delete self
+                if (unlink(__FILE__)) {
+                    echo '<script>document.getElementById("console").innerHTML += "Script was successfully deleted.<br>";</script>';
+                } else {
+                    echo '<script>document.getElementById("console").innerHTML += "An error occurred while deleting the script.<br>";</script>';
+                }
+
+                // Exit after deleting the script
+                exit;
             } else {
                 echo '<script>document.getElementById("console").innerHTML += "Error: Unable to unzip the WordPress file.<br>";</script>';
             }
